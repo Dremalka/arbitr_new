@@ -40,49 +40,51 @@ class Engine(object):
         self.logic_stdin.flush()
         logic_orders = []
 
-        line = self.logic_stdout.readline().decode().replace("\n", "")
+        line = self.logic_stdout.readline().decode().replace('\n', '')
         #enemy_orders.append(map(int, line.split(" ")))
-        logic_orders.append(line)
+        #logic_orders.append(line)
 
-        return logic_orders
+        return line
 
     def communicate_enemy_bot(self, logic_orders):
-        self.enemybot_stdin.write((logic_orders + '\n').encode())
+        self.enemybot_stdin.write((logic_orders+'\n').encode())
         self.enemybot_stdin.flush()
         enemy_orders = []
 
         line = self.enemybot_stdout.readline().decode().replace("\n", "")
         #enemy_orders.append(map(int, line.split(" ")))
-        enemy_orders.append(line)
+        #enemy_orders.append(line)
 
-        return enemy_orders
+        return line
 
     def communicate_my_bot(self, logic_orders):
-        self.mybot_stdin.write((logic_orders + '\n').encode())
+        self.mybot_stdin.write((logic_orders+'\n').encode())
         self.mybot_stdin.flush()
         mybot_orders = []
 
         line = self.mybot_stdout.readline().decode().replace("\n", "")
 
         #mybot_orders.append(map(int, line.split(" ")))
-        mybot_orders.append(line)
+        #mybot_orders.append(line)
 
-        return mybot_orders
+        return line
 
     def make_turn(self):
         logic_orders = self.communicate_logic()
-        if str(logic_orders) == 'cmd stop':
+        if str(logic_orders) == 'cmd stop\r':
             self.process_mybot.kill()
             self.process_enemybot.kill()
             self.process_logic.kill()
             print('stop')
             return False
 
-        print(list(logic_orders))
-        enemy_orders = self.communicate_enemy_bot(''.join(logic_orders))
-        print(list(enemy_orders))
-        mybot_orders = self.communicate_my_bot(''.join(logic_orders))
-        print(list(mybot_orders))
+        print(logic_orders)
+        #enemy_orders = self.communicate_enemy_bot(''.join(logic_orders))
+        enemy_orders = self.communicate_enemy_bot(logic_orders)
+        print(enemy_orders)
+        #mybot_orders = self.communicate_my_bot(''.join(logic_orders))
+        mybot_orders = self.communicate_my_bot(logic_orders)
+        print(mybot_orders)
 
         return True
 
