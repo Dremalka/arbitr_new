@@ -3,4 +3,4 @@
 
 n = input()  # количество строк на игровом поле
 
-print(n)
+print(n + '-enemy bot\n')
